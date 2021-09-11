@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin:0px;
+            background: black;
+        }
+        div{
+            display:block;
+        }
+        .button{
+            border-radius:10px;
+            color:lightgray;
+            font-size:15px;
+            border: 1px lightgray solid;
+            width:100px;
+            height:50px;
+            line-height: 50px;
+            text-align: center;
+        }
+        .button:hover{
+            background:lightgray;
+            color:black
+        }
+        .keyWordBox{
+            background:lightgray;
+            color:black;
+            font-size:30px;
+            border-radius:10px;
+            padding-left: 15px;
+            text-align: left;
+            width:300px;
+            height:50px;
+            line-height: 50px;
+        }
+        .keyWordBox:focus{
+            outline: none;/*outline: 1px lightgray solid;*/
+        }
+    </style>
+    <script src="./An_DanYuanTi.js"></script>
+    <script src="./An_DuoXuanTi.js"></script>
+    <script src="./An_PanDuanTi.js"></script>
+    <script src="./An_TianKongTi.js"></script>
+</head>
+<body onload="loadDanYuan()">
+    <div class='button' onclick='loadDanYuan()'>单选题</div>
+    <div class='button' onclick='loadDuoYuan()'>多选题</div>
+    <div class='button' onclick='loadPanDuan()'>判断题</div>
+    <div class='button' onclick='loadTianKong()'>填空题</div>
+    <div contenteditable class='keyWordBox' id='keyWordBox'></div>
+    <div class='button' onclick="search()">搜索</div>
+    <div id='questionType' style='color:white'></div>
+    <div id='content' style='color:white'></div>
+    <script>
+        var questionListGlobal=[]    
+        function loadDanYuan(){
+            loadQuestion(DanYuanTiList)
+            document.getElementById('questionType').innerText='单选题'
+        }
+        function loadDuoYuan(){
+            loadQuestion(DuoXuanTiList)
+            document.getElementById('questionType').innerText='多选题'
+        }
+        function loadPanDuan(){
+            loadQuestion(PanDuanTiList)
+            document.getElementById('questionType').innerText='判断题'
+        }
+        function loadTianKong(){
+            loadQuestion(TianKongTiList)
+            document.getElementById('questionType').innerText='填空题'
+        }
+        function loadQuestion(questionList){
+            questionListGlobal=questionList
+            var questionListHTML=''
+            for(var i in questionList){
+                questionListHTML+='<div><div><br>'+(parseInt(i)+1)+'.================================</div><div>'+questionList[i].question+'</div><div>'+(questionList[i].options?questionList[i].options:'')+'</div><div>正确答案=>'+questionList[i].answer+'</div><div>'
+            }
+            document.getElementById('content').innerHTML=questionListHTML
+        }
+        function search(){
+            var keyWord=document.getElementById('keyWordBox').innerText
+            var questionList=questionListGlobal.filter(
+                (item)=>{
+                    //console.log(item.question,item.question.indexOf(keyWord))
+                    return item.question.indexOf(keyWord)>-1
+                }
+            )
+            var questionListHTML=''
+            for(var i in questionList){
+                questionListHTML+='<div><div><br>'+(parseInt(i)+1)+'.========</div><div>'+questionList[i].question+'</div><div>'+(questionList[i].options?questionList[i].options:'')+'</div><div>正确答案=>'+questionList[i].answer+'</div><div>'
+            }
+            document.getElementById('content').innerHTML=questionListHTML
+        }
+    </script>
+</body>
+</html>
